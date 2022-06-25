@@ -10,6 +10,7 @@ export const StyledProductListPage = styled.main`
     text-transform: capitalize;
   }
 `;
+
 export const ProductContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);

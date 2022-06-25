@@ -4,9 +4,9 @@ import {
   Redirect,
   Route,
   Switch,
-  withRouter,
 } from "react-router-dom";
 import { CartProvider } from "./CartContext";
+import CartPage from "./CartPage";
 import Header from "./Header";
 import ProductList from "./ProductList";
 import ProductPage from "./ProductPage";
@@ -21,6 +21,8 @@ class Root extends Component {
       cartItems: [],
       setCurrency: this.setCurrency,
       handleAddToCart: this.handleAddToCart,
+      handleSetAttribute: this.handleSetAttribute,
+      updateQuantity: this.updateQuantity,
     };
   }
 
@@ -33,10 +35,29 @@ class Root extends Component {
     } else {
       localStorage.setItem("cartItems", []);
     }
+
+    const selectedCurrency = JSON.parse(
+      localStorage.getItem("selectedCurrency")
+    );
+    if (selectedCurrency) {
+      this.setState({
+        currency: selectedCurrency,
+      });
+    } else {
+      localStorage.setItem("selectedCurrency", "USD");
+    }
   }
 
-  componentDidUpdate() {
-    localStorage.setItem("cartItems", JSON.stringify(this.state.cartItems));
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.cartItems !== this.state.cartItems) {
+      localStorage.setItem("cartItems", JSON.stringify(this.state.cartItems));
+    }
+    if (prevState.currency !== this.state.currency) {
+      localStorage.setItem(
+        "selectedCurrency",
+        JSON.stringify(this.state.currency)
+      );
+    }
   }
 
   setCurrency = (currency) => {
@@ -47,7 +68,6 @@ class Root extends Component {
 
   handleAddToCart = (clickedItem) => {
     this.setState((prev) => {
-      // 1. Is the item already added in the cart?
       const isItemInCart = prev.cartItems.find(
         (item) => item.id === clickedItem.id
       );
@@ -57,9 +77,76 @@ class Root extends Component {
           item.id === clickedItem.id ? { ...item, amount: item.amount++ } : item
         );
       }
-      // First time the item is added
+
+      if (
+        !clickedItem.hasOwnProperty("selectedAttributes") &&
+        clickedItem.attributes.length > 0
+      ) {
+        const attributes = clickedItem.attributes.map(
+          (attribute) => attribute.items[0].value
+        );
+
+        return {
+          cartItems: [
+            ...prev.cartItems,
+            { ...clickedItem, amount: 1, selectedAttributes: attributes },
+          ],
+        };
+      }
       return { cartItems: [...prev.cartItems, { ...clickedItem, amount: 1 }] };
     });
+  };
+
+  handleSetAttribute = (cartItemId, value, index) => {
+    let selectedCartItem = this.state.cartItems.find(
+      (item) => item.id === cartItemId
+    );
+    let updatedAttributes = [...selectedCartItem.selectedAttributes];
+    updatedAttributes[index] = value;
+
+    this.setState((prev) => {
+      const items = prev.cartItems.map((item) =>
+        item.id === selectedCartItem.id
+          ? {
+              ...item,
+              selectedAttributes: updatedAttributes,
+            }
+          : item
+      );
+      return {
+        ...prev,
+        cartItems: items,
+      };
+    });
+  };
+
+  updateQuantity = (type, cartItemId) => {
+    if (type === "plus") {
+      this.setState((prev) => {
+        return prev.cartItems.map((item) =>
+          item.id === cartItemId ? { ...item, amount: item.amount++ } : item
+        );
+      });
+    } else {
+      let selectedCartItem = this.state.cartItems.find(
+        (item) => item.id === cartItemId
+      );
+      if (selectedCartItem.amount - 1 < 1) {
+        this.setState((prev) => {
+          const cartItems = prev.cartItems.filter(
+            (item) => item.id !== cartItemId
+          );
+          return {
+            cartItems,
+          };
+        });
+      }
+      this.setState((prev) => {
+        return prev.cartItems.map((item) =>
+          item.id === cartItemId ? { ...item, amount: item.amount-- } : item
+        );
+      });
+    }
   };
 
   render() {
@@ -82,6 +169,9 @@ class Root extends Component {
             </Route>
             <Route path="/(all|clothes|tech)/:id">
               <ProductPage client={this.props.client} />
+            </Route>
+            <Route exact path="/cart">
+              <CartPage client={this.props.client} />
             </Route>
           </Switch>
         </Router>

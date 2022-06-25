@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { StyledProductCard } from "./styles/ProductCard.style";
 import whiteCart from "../images/white-cart.svg";
 import CartContext from "./CartContext";
-import { Link, Route, Switch, withRouter } from "react-router-dom";
-import ProductPage from "./ProductPage";
+import { Link, withRouter } from "react-router-dom";
 
 class ProductCard extends Component {
   static contextType = CartContext;
@@ -34,9 +33,9 @@ class ProductCard extends Component {
   }
 
   render() {
-    const { gallery, name, inStock, id, category } = this.props.product;
+    const { gallery, name, inStock, id } = this.props.product;
     const context = this.context;
-    const { path, url } = this.props.match;
+    const { url } = this.props.match;
 
     return (
       <>

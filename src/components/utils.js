@@ -7,3 +7,10 @@ export const getItemsFromLocalStorage = () => {
   }
   return null;
 };
+
+export const getTotalItems = (items) => {
+  if (items) {
+    return items.reduce((acc, item) => acc + item.amount, 0);
+  }
+  return 0;
+};

@@ -1,17 +1,21 @@
 import React, { Component } from "react";
-import { StyledHeader } from "./styles/Header.style";
+import { Link, NavLink, withRouter } from "react-router-dom";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import logo from "../images/a-logo.svg";
-import emptyCart from "../images/empty-cart.svg";
-import { NavLink } from "react-router-dom";
-import CurrencySelector from "./CurrencySelector";
 import CartContext from "./CartContext";
+import CurrencySelector from "./CurrencySelector";
+import CartPopup from "./CartPopup";
+import { StyledHeader } from "./styles/Header.style";
+import emptyCart from "../images/empty-cart.svg";
+import logo from "../images/a-logo.svg";
 
 class Header extends Component {
   static contextType = CartContext;
   constructor(props) {
     super(props);
+    this.state = {
+      isCartOpen: false,
+    };
   }
 
   getTotalItems = () => {
@@ -25,7 +29,7 @@ class Header extends Component {
 
   render() {
     const totalItems = this.getTotalItems();
-
+    const { pathname } = this.props.location;
     return (
       <StyledHeader>
         <div className="categories">
@@ -58,8 +62,15 @@ class Header extends Component {
         <div className="cart-info-items">
           <CurrencySelector />
           <div className="cart-icon-container">
-            <img src={emptyCart} alt="empty cart icon" className="cart-icon" />
+            <Link to={`${pathname}?cart=true`}>
+              <img
+                src={emptyCart}
+                alt="empty cart icon"
+                className="cart-icon"
+              />
+            </Link>
             <div className="cart-items-circle">{totalItems}</div>
+            {this.props.location.search === "?cart=true" && <CartPopup />}
           </div>
         </div>
       </StyledHeader>
@@ -67,4 +78,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

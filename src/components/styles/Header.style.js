@@ -65,6 +65,7 @@ export const StyledHeader = styled.header`
 
   .cart-icon-container {
     position: relative;
+    cursor: pointer;
   }
 
   .cart-icon {
@@ -88,5 +89,9 @@ export const StyledHeader = styled.header`
     font-weight: 700;
     font-size: 14px;
     line-height: 30px;
+  }
+
+  .popup-container {
+    height: 677px;
   }
 `;

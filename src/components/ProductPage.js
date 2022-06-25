@@ -3,15 +3,17 @@ import { withRouter } from "react-router-dom";
 import { Query } from "react-apollo";
 import classNames from "classnames";
 import gql from "graphql-tag";
+import CartContext from "./CartContext";
 import { StyledProductPage } from "./styles/ProductPage.style";
 
 class ProductPage extends Component {
+  static contextType = CartContext;
   constructor(props) {
     super(props);
 
     this.state = {
       previewImg: "",
-      selectedColor: "",
+      selectedAttributes: [],
     };
 
     this.id = this.props.match.params.id.slice(1);
@@ -36,7 +38,7 @@ class ProductPage extends Component {
                 }
                 prices {
                   currency {
-                    label
+                    label                    
                   }
                 }
                 brand
@@ -45,24 +47,38 @@ class ProductPage extends Component {
       `,
       })
       .then((result) => {
+        const { gallery, attributes } = result.data.product;
         this.setState({
-          previewImg: result.data.product.gallery[0],
+          previewImg: gallery[0],
         });
 
-        const colorAttribute = result.data.product.attributes.find(
-          (attribute) => attribute.name === "Color"
-        );
-
-        if (colorAttribute) {
+        if (attributes.length > 0) {
+          const selectedAttributes = attributes.map(
+            (attribute) => attribute.items[0].value
+          );
           this.setState({
-            selectedColor: colorAttribute.items[0].value,
+            selectedAttributes,
           });
         }
       });
   }
 
+  handleSetAttribute = (value, index) => {
+    let updatedAttributes = [...this.state.selectedAttributes];
+    updatedAttributes[index] = value;
+    this.setState({
+      selectedAttributes: updatedAttributes,
+    });
+  };
+
+  g = (clickedItem) => {
+    console.log(clickedItem);
+  };
+
   render() {
     const { previewImg } = this.state;
+    const context = this.context;
+    console.log(this.state.selectedAttributes);
 
     return (
       <Query
@@ -71,6 +87,8 @@ class ProductPage extends Component {
           product(id: "${this.id}") {
             id
             name
+            brand
+            inStock
             gallery
             description
             attributes {
@@ -81,10 +99,12 @@ class ProductPage extends Component {
             }
             prices {
               currency {
+                symbol
                 label
               }
+              amount
             }
-            brand
+            
           }
         }
       `}
@@ -92,31 +112,25 @@ class ProductPage extends Component {
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error! ${error.message}</p>;
-          const { name, brand, description, gallery } = data.product;
-
+          const { name, brand, description, gallery, prices, inStock } =
+            data.product;
+          const selectedCurrency = prices.find(
+            (price) => price.currency.label === context.currency
+          );
           return (
             <StyledProductPage>
               <div className="product">
                 <div className="product-images">
                   <div className="product-images-list">
-                    <div
-                      className="product-images-list-item"
-                      onClick={() => this.setState({ previewImg: gallery[0] })}
-                    >
-                      <img src={gallery[0]} alt="" />
-                    </div>
-                    <div
-                      className="product-images-list-item"
-                      onClick={() => this.setState({ previewImg: gallery[1] })}
-                    >
-                      <img src={gallery[1]} alt="" />
-                    </div>
-                    <div
-                      className="product-images-list-item"
-                      onClick={() => this.setState({ previewImg: gallery[2] })}
-                    >
-                      <img src={gallery[2]} alt="" />
-                    </div>
+                    {gallery.map((image) => (
+                      <div
+                        className="product-images-list-item"
+                        onMouseOver={() => this.setState({ previewImg: image })}
+                        key={image}
+                      >
+                        <img src={image} alt="" />
+                      </div>
+                    ))}
                   </div>
                   <div className="product-images-main">
                     <img src={previewImg} alt="" />
@@ -127,8 +141,8 @@ class ProductPage extends Component {
                   <h2 className="product-info-name">{name}</h2>
 
                   {data.product.attributes.length > 0 &&
-                    data.product.attributes.map((attribute) => (
-                      <div className="product-info-item">
+                    data.product.attributes.map((attribute, index) => (
+                      <div className="product-info-item" key={attribute.name}>
                         <h3 className="product-info-title">{`${attribute.name}:`}</h3>
                         <ul className="list">
                           {attribute.items.map((item) => (
@@ -137,9 +151,18 @@ class ProductPage extends Component {
                               className={classNames({
                                 "list-item": attribute.name !== "Color",
                                 "list-item-color": attribute.name === "Color",
+                                "list-item-selected":
+                                  attribute.name !== "Color" &&
+                                  item.value ===
+                                    this.state.selectedAttributes[index],
                                 "list-item-color-selected":
-                                  this.state.selectedColor === item.value,
+                                  attribute.name === "Color" &&
+                                  item.value ===
+                                    this.state.selectedAttributes[index],
                               })}
+                              onClick={() =>
+                                this.handleSetAttribute(item.value, index)
+                              }
                             >
                               <div
                                 style={
@@ -160,53 +183,32 @@ class ProductPage extends Component {
                       </div>
                     ))}
                   <div className="product__info__item">
-                    <span className="product__info__item__price">
-                      {/* {numberWithCommas(product.price)} */}
-                    </span>
+                    <h3 className="product-info-title">Price:</h3>
+                    <p className="product-price">
+                      {selectedCurrency.currency.symbol}
+                      {selectedCurrency.amount}
+                    </p>
                   </div>
-                  <div className="product__info__item">
-                    {/* <div className="product__info__item__title">Kích cỡ</div> */}
-                    <div className="product__info__item__list">
-                      {/* {product.size.map((item, index) => (
-                        <div
-                          key={index}
-                          className={`product__info__item__list__item ${
-                            size === item ? "active" : ""
-                          }`}
-                          onClick={() => setSize(item)}
-                        >
-                          <span className="product__info__item__list__item__size">
-                            {item}
-                          </span>
-                        </div>
-                      ))} */}
-                    </div>
-                  </div>
-                  <div className="product__info__item">
-                    {/* <div className="product__info__item__title">Số lượng</div> */}
-                    <div className="product__info__item__quantity">
-                      <div
-                        className="product__info__item__quantity__btn"
-                        // onClick={() => updateQuantity("minus")}
-                      >
-                        <i className="bx bx-minus"></i>
-                      </div>
-                      <div className="product__info__item__quantity__input">
-                        {/* {quantity} */}
-                      </div>
-                      <div
-                        className="product__info__item__quantity__btn"
-                        // onClick={() => updateQuantity("plus")}
-                      >
-                        <i className="bx bx-plus"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="product__info__item">
-                    <button className="product-add-btn">add to cart</button>
-                    {/* <Button onClick={() => addToCart()}>thêm vào giỏ</Button>
-                    <Button onClick={() => goToCart()}>mua ngay</Button> */}
-                  </div>
+                  <button
+                    disabled={!inStock}
+                    className={classNames({
+                      "product-add-btn": inStock,
+                      "product-add-btn-disabled": !inStock,
+                    })}
+                    onClick={() =>
+                      context.handleAddToCart(
+                        Object.assign(data.product, {
+                          selectedAttributes: this.state.selectedAttributes,
+                        })
+                      )
+                    }
+                  >
+                    {inStock ? "add to cart" : "out of stock"}
+                  </button>
+                  <div
+                    className="product-description"
+                    dangerouslySetInnerHTML={{ __html: description }}
+                  />
                 </div>
               </div>
             </StyledProductPage>

@@ -6,16 +6,17 @@ const GlobalStyles = createGlobalStyle`
   * {
     box-sizing: border-box;
     background: white;
+    scroll-behavior: smooth;
   }
 
   body {
     font-family: 'Raleway', sans-serif;
-    color: #1D1F22;
+    color: #1D1F22;    
   }
 
-  h1, h2, p {
+  h1, h2, h3, ul, p {
     margin: 0;
-  }
+  }  
 `;
 
 export default GlobalStyles;

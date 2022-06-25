@@ -7,14 +7,9 @@ import { StyledProductListPage } from "./styles/ProductList.style";
 import { ProductContainer } from "./styles/ProductList.style";
 import CartContext from "./CartContext";
 import { withRouter } from "react-router";
-import ProductPage from "./ProductPage";
-import { Switch, Route, Link } from "react-router-dom";
 
 class ProductList extends Component {
   static contextType = CartContext;
-  constructor(props) {
-    super(props);
-  }
 
   category = this.props.match.params;
 
@@ -25,7 +20,14 @@ class ProductList extends Component {
         products {
           id
           name
+          brand
           inStock
+          attributes {
+            name
+            items {
+              value
+            }
+          }
           prices {
             currency {
               symbol
@@ -42,7 +44,7 @@ class ProductList extends Component {
 
   render() {
     const context = this.context;
-    const { path } = this.props.match;
+
     return (
       <>
         <Query query={this.query}>
