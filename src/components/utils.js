@@ -8,6 +8,16 @@ export const getItemsFromLocalStorage = () => {
   return null;
 };
 
+export const getCurrency = () => {
+  const currencyFromStorage = localStorage.getItem("selectedCurrency");
+
+  if (currencyFromStorage) {
+    const currency = JSON.parse(currencyFromStorage);
+    return currency;
+  }
+  return null;
+};
+
 export const getTotalItems = (items) => {
   if (items) {
     return items.reduce((acc, item) => acc + item.amount, 0);

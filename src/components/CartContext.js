@@ -1,9 +1,6 @@
 import React from "react";
 
-const CartContext = React.createContext({
-  currency: "USD",
-  cartItems: [],
-});
+const CartContext = React.createContext({});
 
 export const CartProvider = CartContext.Provider;
 export const CartConsumer = CartContext.Consumer;

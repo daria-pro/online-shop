@@ -10,7 +10,7 @@ import CartPage from "./CartPage";
 import Header from "./Header";
 import ProductList from "./ProductList";
 import ProductPage from "./ProductPage";
-import { getItemsFromLocalStorage } from "./utils";
+import { getCurrency, getItemsFromLocalStorage } from "./utils";
 
 class Root extends Component {
   constructor(props) {
@@ -28,6 +28,8 @@ class Root extends Component {
 
   componentDidMount() {
     const cartItems = getItemsFromLocalStorage();
+    const selectedCurrency = getCurrency();
+
     if (cartItems) {
       this.setState({
         cartItems: [...cartItems],
@@ -36,15 +38,12 @@ class Root extends Component {
       localStorage.setItem("cartItems", []);
     }
 
-    const selectedCurrency = JSON.parse(
-      localStorage.getItem("selectedCurrency")
-    );
     if (selectedCurrency) {
       this.setState({
         currency: selectedCurrency,
       });
     } else {
-      localStorage.setItem("selectedCurrency", "USD");
+      localStorage.setItem("selectedCurrency", "");
     }
   }
 

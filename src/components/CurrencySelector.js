@@ -71,7 +71,9 @@ class CurrencySelector extends Component {
             return (
               <>
                 <div className="currency-label-container" onClick={this.toggle}>
-                  <h3 className="currency-label">{selectedCurrency.symbol}</h3>
+                  <h3 className="currency-label">
+                    {selectedCurrency && selectedCurrency.symbol}
+                  </h3>
                   <img src={arrowDown} alt="arrow down" />
                 </div>
                 {isOpen && (

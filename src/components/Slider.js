@@ -52,12 +52,16 @@ class Slider extends Component {
             </div>
           );
         })}
-        <button onClick={this.nextSlide} className="slide-btn prev">
-          <img src={leftArrow} alt="left arrow" />
-        </button>
-        <button onClick={this.prevSlide} className="slide-btn next">
-          <img src={rightArrow} alt="right arrow" />
-        </button>
+        {images.length > 1 && (
+          <>
+            <button onClick={this.nextSlide} className="slide-btn prev">
+              <img src={leftArrow} alt="left arrow" />
+            </button>
+            <button onClick={this.prevSlide} className="slide-btn next">
+              <img src={rightArrow} alt="right arrow" />
+            </button>
+          </>
+        )}
       </StyledSlider>
     );
   }

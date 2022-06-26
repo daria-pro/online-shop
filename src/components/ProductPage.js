@@ -71,14 +71,9 @@ class ProductPage extends Component {
     });
   };
 
-  g = (clickedItem) => {
-    console.log(clickedItem);
-  };
-
   render() {
     const { previewImg } = this.state;
     const context = this.context;
-    console.log(this.state.selectedAttributes);
 
     return (
       <Query
