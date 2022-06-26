@@ -84,16 +84,9 @@ export const StyledCartPopup = styled.div`
     justify-content: center;
   }
 
-  .list-item:hover {
-    background-color: #1d1f22;
-    color: #fff;
-    cursor: pointer;
-  }
-
   .list-item-selected {
     background-color: #1d1f22;
     color: #fff;
-    cursor: pointer;
   }
 
   .list-item-color {
@@ -109,7 +102,6 @@ export const StyledCartPopup = styled.div`
     width: 32px;
     height: 32px;
     margin: 2px;
-    cursor: pointer;
   }
 
   .list-item-color-selected {

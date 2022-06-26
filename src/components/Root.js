@@ -67,16 +67,7 @@ class Root extends Component {
 
   handleAddToCart = (clickedItem) => {
     this.setState((prev) => {
-      const isItemInCart = prev.cartItems.find(
-        (item) => item.id === clickedItem.id
-      );
-
-      if (isItemInCart) {
-        return prev.cartItems.map((item) =>
-          item.id === clickedItem.id ? { ...item, amount: item.amount++ } : item
-        );
-      }
-
+      // when product is added from PLP and has attributes
       if (
         !clickedItem.hasOwnProperty("selectedAttributes") &&
         clickedItem.attributes.length > 0
@@ -84,15 +75,61 @@ class Root extends Component {
         const attributes = clickedItem.attributes.map(
           (attribute) => attribute.items[0].value
         );
+        const newId = clickedItem.id + attributes.join("");
+
+        const isItemInCart = prev.cartItems.find((item) => item.id === newId);
+
+        if (isItemInCart) {
+          return prev.cartItems.map((item) =>
+            item.id === newId
+              ? {
+                  ...item,
+                  amount: item.amount++,
+                  selectedAttributes: attributes,
+                }
+              : item
+          );
+        }
 
         return {
           cartItems: [
             ...prev.cartItems,
-            { ...clickedItem, amount: 1, selectedAttributes: attributes },
+            {
+              ...clickedItem,
+              amount: 1,
+              id: newId,
+              selectedAttributes: attributes,
+            },
+          ],
+        };
+        // when product is added from PDP and has attributes
+      } else if (clickedItem.attributes.length > 0) {
+        const newId = clickedItem.id + clickedItem.selectedAttributes.join("");
+        const isItemInCart = prev.cartItems.find((item) => item.id === newId);
+        if (isItemInCart) {
+          return prev.cartItems.map((item) =>
+            item.id === newId ? { ...item, amount: item.amount++ } : item
+          );
+        }
+        return {
+          cartItems: [
+            ...prev.cartItems,
+            { ...clickedItem, amount: 1, id: newId },
           ],
         };
       }
-      return { cartItems: [...prev.cartItems, { ...clickedItem, amount: 1 }] };
+      // when product doesn't have attributes
+      const isItemInCart = prev.cartItems.find(
+        (item) => item.id === clickedItem.id
+      );
+      if (isItemInCart) {
+        return prev.cartItems.map((item) =>
+          item.id === clickedItem.id ? { ...item, amount: item.amount++ } : item
+        );
+      }
+      return {
+        cartItems: [...prev.cartItems, { ...clickedItem, amount: 1 }],
+      };
     });
   };
 

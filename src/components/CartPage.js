@@ -111,13 +111,6 @@ class CartPage extends Component {
                                         item.value ===
                                           cartItem.selectedAttributes[index],
                                     })}
-                                    onClick={() =>
-                                      context.handleSetAttribute(
-                                        cartItem.id,
-                                        item.value,
-                                        index
-                                      )
-                                    }
                                   >
                                     <div
                                       style={

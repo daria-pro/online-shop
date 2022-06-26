@@ -85,11 +85,9 @@ export const StyledCartPage = styled.div`
     justify-content: center;
   }
 
-  .list-item-selected,
-  .list-item:hover {
+  .list-item-selected {
     background-color: #1d1f22;
     color: #fff;
-    cursor: pointer;
   }
 
   .list-item-color {
@@ -105,7 +103,6 @@ export const StyledCartPage = styled.div`
     width: 32px;
     height: 32px;
     margin: 2px;
-    cursor: pointer;
   }
 
   .list-item-color-selected {

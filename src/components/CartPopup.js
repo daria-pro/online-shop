@@ -58,6 +58,7 @@ class CartPopup extends Component {
                 </span>
               </h2>
               <img
+                alt="cross icon"
                 src={cross}
                 className="popup-close-cross"
                 onClick={this.handleClose}
@@ -102,13 +103,6 @@ class CartPopup extends Component {
                                       item.value ===
                                         cartItem.selectedAttributes[index],
                                   })}
-                                  onClick={() =>
-                                    context.handleSetAttribute(
-                                      cartItem.id,
-                                      item.value,
-                                      index
-                                    )
-                                  }
                                 >
                                   <div
                                     style={
@@ -138,7 +132,7 @@ class CartPopup extends Component {
                           context.updateQuantity("plus", cartItem.id)
                         }
                       >
-                        <img src={plus} />
+                        <img src={plus} alt="plus icon" />
                       </div>
                       <div className="product-amount"> {cartItem.amount} </div>
                       <div
@@ -147,11 +141,15 @@ class CartPopup extends Component {
                           context.updateQuantity("minus", cartItem.id)
                         }
                       >
-                        <img src={minus} />
+                        <img src={minus} alt="minus icon" />
                       </div>
                     </div>
                     <div className="product-img-container">
-                      <img className="product-img" src={cartItem.gallery[0]} />
+                      <img
+                        className="product-img"
+                        src={cartItem.gallery[0]}
+                        alt={cartItem.name}
+                      />
                     </div>
                   </div>
                 );
