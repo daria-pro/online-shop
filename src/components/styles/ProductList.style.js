@@ -5,7 +5,7 @@ export const StyledProductListPage = styled.main`
     font-weight: 400;
     font-size: 42px;
     line-height: 160%;
-    padding: 103px 1px;
+    padding: 160px 1px 103px;
     margin: 0;
     text-transform: capitalize;
   }
@@ -14,7 +14,7 @@ export const StyledProductListPage = styled.main`
 export const ProductContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: auto;
-  grid-row-gap: 70px;
+  grid-column-gap: 40px;
+  grid-row-gap: 103px;
   justify-items: center;
 `;

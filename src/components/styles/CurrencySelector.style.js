@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledCurrencySelector = styled.div`
   display: block;
   position: relative;
-  width: 65px;
+  width: 60px;
   height: 18px;
 
   .currency-label-container {
@@ -44,6 +44,8 @@ export const StyledCurrencySelector = styled.div`
     border-radius: $border-radius;
     box-sizing: border-box;
     font-weight: 500;
+    font-size: 18px;
+    line-height: 160%;
     z-index: 2;
   }
 

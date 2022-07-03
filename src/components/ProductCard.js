@@ -33,7 +33,7 @@ class ProductCard extends Component {
   }
 
   render() {
-    const { gallery, name, inStock, id } = this.props.product;
+    const { gallery, name, inStock, id, brand } = this.props.product;
     const context = this.context;
     const { url } = this.props.match;
 
@@ -59,7 +59,7 @@ class ProductCard extends Component {
               )}
             </div>
             <Link className="router-link" to={`${url}/:${id}`} replace>
-              <h2 className="product-name">{name}</h2>
+              <h2 className="product-name">{`${brand} ${name}`}</h2>
               <div className="price">
                 <p>{this.state.currency.symbol}</p>
                 <p>{this.state.amount}</p>

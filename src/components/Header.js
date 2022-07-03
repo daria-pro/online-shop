@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import CartContext from "./CartContext";
 import CurrencySelector from "./CurrencySelector";
@@ -15,7 +14,27 @@ class Header extends Component {
     super(props);
     this.state = {
       isCartOpen: false,
+      currencies: [],
     };
+  }
+
+  componentDidMount() {
+    this.props.client
+      .query({
+        query: gql`
+          {
+            currencies {
+              label
+              symbol
+            }
+          }
+        `,
+      })
+      .then((result) => {
+        this.setState({
+          currencies: result.data.currencies,
+        });
+      });
   }
 
   getTotalItems = () => {
@@ -30,37 +49,25 @@ class Header extends Component {
   render() {
     const totalItems = this.getTotalItems();
     const { pathname } = this.props.location;
+    const { currencies } = this.state;
+
     return (
       <StyledHeader>
         <div className="categories">
-          <Query
-            query={gql`
-              {
-                categories {
-                  name
-                }
-              }
-            `}
-          >
-            {({ loading, error, data }) => {
-              if (loading) return <p>Loading...</p>;
-              if (error) return <p>Error: {error.message}</p>;
-              return data.categories.map((category) => (
-                <NavLink
-                  to={`/${category.name}`}
-                  key={category.name}
-                  className="nav-link"
-                  activeClassName="nav-link-active"
-                >
-                  {category.name}
-                </NavLink>
-              ));
-            }}
-          </Query>
+          {this.props.categories.map((category) => (
+            <NavLink
+              to={`/${category}`}
+              key={category}
+              className="nav-link"
+              activeClassName="nav-link-active"
+            >
+              {category}
+            </NavLink>
+          ))}
         </div>
         <img src={logo} alt="logo-icon" className="logo" />
         <div className="cart-info-items">
-          <CurrencySelector />
+          <CurrencySelector currencies={currencies} />
           <div className="cart-icon-container">
             <Link to={`${pathname}?cart=true`}>
               <img
@@ -68,8 +75,8 @@ class Header extends Component {
                 alt="empty cart icon"
                 className="cart-icon"
               />
+              <div className="cart-items-circle">{totalItems}</div>
             </Link>
-            <div className="cart-items-circle">{totalItems}</div>
             {this.props.location.search === "?cart=true" && <CartPopup />}
           </div>
         </div>

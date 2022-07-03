@@ -1,11 +1,15 @@
 import styled from "styled-components";
 
 export const StyledHeader = styled.header`
-  padding: 20px 0 0;
+  padding: 20px 0 20px;
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: 1238px;
+  position: fixed;
+  z-index: 3;
 
   .categories {
     display: flex;
@@ -16,7 +20,7 @@ export const StyledHeader = styled.header`
     position: relative;
     font-weight: 400;
     padding: 0 16px;
-    line-height: 1.5 rem;
+    line-height: 120%;
     text-transform: uppercase;
     text-decoration: none;
   }
@@ -64,6 +68,7 @@ export const StyledHeader = styled.header`
   }
 
   .cart-icon-container {
+    height: 21px;
     position: relative;
     cursor: pointer;
   }

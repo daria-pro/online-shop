@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 export const StyledCartPage = styled.div`
+  * {
+    box-sizing: border-box;
+  }
+
   .cart-title {
     font-weight: 700;
     font-size: 32px;
     line-height: 40px;
     text-transform: uppercase;
-    padding: 80px 0 55px;
+    padding: 160px 0 0;
   }
 
   .cart-title:after {
@@ -20,7 +24,11 @@ export const StyledCartPage = styled.div`
 
   .product {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+  }
+
+  .products-container {
+    padding: 24px 0 0;
   }
 
   .product-divider {
@@ -62,7 +70,7 @@ export const StyledCartPage = styled.div`
     line-height: 18px;
     font-family: "Roboto Condensed";
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   .list {
@@ -70,19 +78,21 @@ export const StyledCartPage = styled.div`
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    font-family: "Source Sans Pro", sans-serif;
   }
 
   .list-item {
     min-width: 63px;
     width: fit-content;
-    padding: 12px 0;
+    height: 45px;
     border: 1px solid #1d1f22;
     margin: 0 8px 16px 0;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 160%;
+    font-size: 16px;
+    line-height: 18px;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .list-item-selected {
@@ -144,7 +154,7 @@ export const StyledCartPage = styled.div`
     font-size: 24px;
     line-height: 28px;
     font-weight: 400;
-    padding: 8px 0 16px;
+    padding-top: 8px;
   }
 
   .summary-item {
@@ -175,6 +185,6 @@ export const StyledCartPage = styled.div`
 
   .cart-empty-title {
     text-align: center;
-    margin-bottom: 30px;
+    margin: 30px auto;
   }
 `;

@@ -4,7 +4,9 @@ export const StyledProductCard = styled.div`
   font-family: "Raleway", sans-serif;
   background: white;
   padding: 0 16px;
-  width: 88%;
+  min-width: 100%;
+  max-width: 386px;
+  box-sizing: border-box;
 
   &:hover {
     filter: drop-shadow(0px 4px 35px rgba(168, 172, 176, 0.19));
@@ -25,8 +27,9 @@ export const StyledProductCard = styled.div`
     max-width: 354px;
     height: 330px;
     object-fit: contain;
-    padding: 16px 0 24px;
+    padding: 16px 0 0;
     position: relative;
+    z-index: 0;
   }
 
   .product-sold-message {
@@ -34,7 +37,7 @@ export const StyledProductCard = styled.div`
     color: #8d8f9a;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -60%);
+    transform: translate(-50%, -58%);
     text-transform: uppercase;
     font-weight: 400;
     font-size: 24px;
@@ -52,7 +55,8 @@ export const StyledProductCard = styled.div`
     font-weight: 300;
     font-size: 18px;
     line-height: 160%;
-    margin: 30px auto 5px 0;
+    margin: 22px auto 0;
+    padding: 0;
   }
 
   .cart-circle {

@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 export const StyledProductPage = styled.div`
-  padding-top: 112px;
+  padding-top: 162px;
+  * {
+    box-sizing: border-box;
+  }
 
   .product {
     display: flex;
@@ -9,11 +12,10 @@ export const StyledProductPage = styled.div`
 
   .product-images {
     display: flex;
-    width: 60%;
   }
 
   .product-images-list {
-    padding-right: 40px;
+    margin-right: 40px;
     overflow: auto;
     height: 511px;
     -ms-overflow-style: none;
@@ -41,8 +43,6 @@ export const StyledProductPage = styled.div`
     width: 610px;
     height: 511px;
     margin-right: 100px;
-    display: flex;
-    justify-content: flex-start;
   }
 
   .product-images-main img {
@@ -52,18 +52,18 @@ export const StyledProductPage = styled.div`
   }
 
   .product-info {
-    max-width: 300px;
+    max-width: 292px;
   }
 
   .product-price {
     font-weight: 700;
     font-size: 24px;
-    line-height: 18px;
-    margin: 20px 0 30px;
+    line-height: 46px;
+    margin: 10px 0 20px;
   }
 
   .product-info-item {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
   }
 
   .product-info-brand {
@@ -98,8 +98,8 @@ export const StyledProductPage = styled.div`
   }
 
   .list-item {
-    padding: 14px 0;
     width: 63px;
+    height: 45px;
     border: 1px solid #1d1f22;
     margin: 0 0 12px 0;
     font-weight: 400;
@@ -107,6 +107,7 @@ export const StyledProductPage = styled.div`
     line-height: 18px;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .list-item:not(:last-child) {
@@ -123,9 +124,11 @@ export const StyledProductPage = styled.div`
   .list-item-color {
     width: 36px;
     height: 36px;
-    padding: 2px;
-    margin-right: 8px;
+    margin: 0 8px 24px 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .list-item-color-selected {
@@ -133,20 +136,20 @@ export const StyledProductPage = styled.div`
   }
 
   .list-item-color-bg {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   }
 
   .product-add-btn {
     color: #fff;
     background-color: #5ece7b;
     width: 100%;
-    min-width: 300px;
     height: 52px;
     border: none;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 16px;
+    padding: 0;
     cursor: pointer;
   }
 
@@ -158,13 +161,13 @@ export const StyledProductPage = styled.div`
     color: #fff;
     background-color: gray;
     width: 100%;
-    min-width: 300px;
     height: 52px;
     border: none;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 16px;
     cursor: pointer;
+    padding: 0;
   }
 
   .product-description {
@@ -173,16 +176,11 @@ export const StyledProductPage = styled.div`
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 159.96%;
+    line-height: 160%;
     overflow: auto;
     height: 300px;
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  .product-description ul {
-    padding: 0;
-    list-style: none;
   }
 
   .product-description h1,

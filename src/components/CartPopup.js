@@ -7,7 +7,7 @@ import minus from "../images/minus.svg";
 import { createRef } from "react";
 import { Link, withRouter } from "react-router-dom";
 import cross from "../images/cross.svg";
-import { getTotalItems } from "./utils";
+import { getTotalItems, getTotalSum } from "./utils";
 
 class CartPopup extends Component {
   static contextType = CartContext;
@@ -43,12 +43,15 @@ class CartPopup extends Component {
 
   render() {
     const context = this.context;
-    const cartItems = this.context.cartItems;
+    const cartItems = context.cartItems;
     const totalItems = getTotalItems(cartItems);
+    const totalSum = getTotalSum(context);
+    const selectedCurrency = context.currency;
 
     return (
       <>
         <StyledCartPopup>
+          <div className="popup-backdrop"></div>
           <div className="popup-content" ref={this.cartRef}>
             <div className="popup-header-container">
               <h2 className="popup-title-text">
@@ -67,7 +70,7 @@ class CartPopup extends Component {
             {cartItems &&
               cartItems.map((cartItem) => {
                 const selectedCurrency = cartItem.prices.filter(
-                  (price) => price.currency.label === context.currency
+                  (price) => price.currency.label === context.currency.label
                 );
 
                 return (
@@ -154,6 +157,13 @@ class CartPopup extends Component {
                   </div>
                 );
               })}
+            <div className="popup-total">
+              <p>Total:</p>
+              <p className="popup-sum">
+                {selectedCurrency.symbol}
+                {totalSum}
+              </p>
+            </div>
             <div className="popup-buttons-container">
               <Link to="/cart">
                 <button className="popup-white-btn">view bag</button>

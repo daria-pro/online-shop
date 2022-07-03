@@ -1,3 +1,4 @@
+import gql from "graphql-tag";
 import { Component } from "react";
 import {
   BrowserRouter as Router,
@@ -17,8 +18,13 @@ class Root extends Component {
     super(props);
 
     this.state = {
-      currency: "USD",
+      currency: {
+        label: "USD",
+        symbol: "$",
+      },
       cartItems: [],
+      categories: [],
+      openCart: false,
       setCurrency: this.setCurrency,
       handleAddToCart: this.handleAddToCart,
       handleSetAttribute: this.handleSetAttribute,
@@ -29,6 +35,24 @@ class Root extends Component {
   componentDidMount() {
     const cartItems = getItemsFromLocalStorage();
     const selectedCurrency = getCurrency();
+
+    this.props.client
+      .query({
+        query: gql`
+          {
+            categories {
+              name
+            }
+          }
+        `,
+      })
+      .then((result) => {
+        const categories = result.data.categories;
+        const categoryNames = categories.map((category) => category.name);
+        this.setState({
+          categories: categoryNames,
+        });
+      });
 
     if (cartItems) {
       this.setState({
@@ -43,7 +67,7 @@ class Root extends Component {
         currency: selectedCurrency,
       });
     } else {
-      localStorage.setItem("selectedCurrency", "");
+      localStorage.setItem("selectedCurrency", {});
     }
   }
 
@@ -186,24 +210,22 @@ class Root extends Component {
   };
 
   render() {
+    const categories = this.state.categories;
+
     return (
       <CartProvider value={this.state}>
         <Router>
-          <Header />
+          <Header categories={categories} client={this.props.client} />
           <Switch>
             <Route exact path="/">
-              <Redirect to="/all" />
+              {categories[0] && <Redirect to={`/${categories[0]}`} />}
             </Route>
-            <Route exact path="/all">
-              <ProductList category="all" />
-            </Route>
-            <Route exact path="/clothes">
-              <ProductList category="clothes" />
-            </Route>
-            <Route exact path="/tech">
-              <ProductList category="tech" />
-            </Route>
-            <Route path="/(all|clothes|tech)/:id">
+            {categories.map((category) => (
+              <Route exact path={`/${category}`} key={category}>
+                <ProductList category={category} />
+              </Route>
+            ))}
+            <Route path={`/(${categories.join("|")})/:id`}>
               <ProductPage client={this.props.client} />
             </Route>
             <Route exact path="/cart">

@@ -5,7 +5,6 @@ export const StyledCartPopup = styled.div`
     position: absolute;
     right: -15px;
     top: 50px;
-    filter: drop-shadow(0px 4px 35px rgba(0, 0, 0, 0.19));
     width: 325px;
     max-height: 677px;
     background-color: #fff;
@@ -15,7 +14,7 @@ export const StyledCartPopup = styled.div`
     scrollbar-width: none;
     cursor: default;
 
-    z-index: 2;
+    z-index: 3;
   }
 
   .popup-content::-webkit-scrollbar {
@@ -69,6 +68,10 @@ export const StyledCartPopup = styled.div`
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 160%;
   }
 
   .list-item {
@@ -114,6 +117,9 @@ export const StyledCartPopup = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 190px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 160%;
   }
 
   .product-amount-control {
@@ -151,6 +157,22 @@ export const StyledCartPopup = styled.div`
   .popup-close-cross {
     width: 16px;
     cursor: pointer;
+  }
+
+  .popup-total {
+    display: flex;
+    justify-content: space-between;
+    font-family: "Roboto";
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
+    margin-bottom: 34px;
+  }
+
+  .popup-sum {
+    font-family: "Raleway";
+    font-weight: 700;
+    line-height: 160%;
   }
 
   .popup-buttons-container {
@@ -193,5 +215,15 @@ export const StyledCartPopup = styled.div`
   .popup-green-btn:hover {
     opacity: 0.9;
     cursor: pointer;
+  }
+
+  .popup-backdrop {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(57, 55, 72, 0.22);
+    z-index: 3;
   }
 `;

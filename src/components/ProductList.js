@@ -15,13 +15,14 @@ class ProductList extends Component {
 
   query = gql`
     {
-      categories {
+      category(input: { title: "${this.props.category}" }) {
         name
         products {
           id
           name
           brand
           inStock
+          gallery
           attributes {
             name
             items {
@@ -35,8 +36,6 @@ class ProductList extends Component {
             }
             amount
           }
-          category
-          gallery
         }
       }
     }
@@ -52,17 +51,15 @@ class ProductList extends Component {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error! ${error.message}</p>;
 
-            const category = data.categories.filter(
-              (category) => category.name === this.props.category
-            );
+            const { name, products } = data.category;
 
             return (
               <StyledProductListPage>
-                <h1>{category[0].name}</h1>
+                <h1>{name}</h1>
                 <ProductContainer>
-                  {category[0].products.map((product) => {
+                  {products.map((product) => {
                     const selectedCurrency = product.prices.filter(
-                      (price) => price.currency.label === context.currency
+                      (price) => price.currency.label === context.currency.label
                     );
                     return (
                       <ProductCard

@@ -2,7 +2,7 @@ import { Component } from "react";
 import classNames from "classnames";
 import gql from "graphql-tag";
 import CartContext from "./CartContext";
-import { getTotalItems } from "./utils";
+import { getTotalItems, getTotalSum } from "./utils";
 import { StyledCartPage } from "./styles/CartPage.style";
 import plus from "../images/plus.svg";
 import minus from "../images/minus.svg";
@@ -17,25 +17,6 @@ class CartPage extends Component {
       currencies: [],
     };
   }
-
-  getTotalSum = () => {
-    const currenciesList = this.context.cartItems.map((cartItem) => {
-      return cartItem.prices;
-    });
-    const amountsList = this.context.cartItems.map((cartItem) => {
-      return cartItem.amount;
-    });
-    const filteredPrices = currenciesList.map((item) =>
-      item.filter((e) => e.currency.label === this.context.currency)
-    );
-    const productAmountList = filteredPrices.map(
-      (price, index) => price[0].amount * amountsList[index]
-    );
-
-    const totalSum = productAmountList.reduce((acc, item) => acc + item, 0);
-
-    return totalSum.toFixed(2);
-  };
 
   componentDidMount() {
     this.props.client
@@ -56,15 +37,13 @@ class CartPage extends Component {
       });
   }
 
-  componentDidUpdate() {}
-
   render() {
     const context = this.context;
     const cartItems = this.context.cartItems;
     const totalItems = getTotalItems(cartItems);
-    const totalSum = this.getTotalSum();
+    const totalSum = getTotalSum(this.context);
     const selectedCurrency = this.state.currencies.find(
-      (currency) => currency.label === context.currency
+      (currency) => currency.label === context.currency.label
     );
 
     return (
@@ -75,7 +54,7 @@ class CartPage extends Component {
             <div className="products-container">
               {cartItems.map((cartItem) => {
                 const selectedCurrency = cartItem.prices.filter(
-                  (price) => price.currency.label === context.currency
+                  (price) => price.currency.label === context.currency.label
                 );
                 return (
                   <>
