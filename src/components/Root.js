@@ -67,7 +67,10 @@ class Root extends Component {
         currency: selectedCurrency,
       });
     } else {
-      localStorage.setItem("selectedCurrency", {});
+      localStorage.setItem(
+        "selectedCurrency",
+        JSON.stringify({ label: "USD", symbol: "$" })
+      );
     }
   }
 

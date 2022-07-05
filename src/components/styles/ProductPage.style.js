@@ -172,7 +172,7 @@ export const StyledProductPage = styled.div`
 
   .product-description {
     margin-top: 40px;
-    font-family: "Roboto";
+    font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -189,9 +189,7 @@ export const StyledProductPage = styled.div`
   .product-description h4,
   .product-description h5,
   .product-description h6 {
-    margin-bottom: 8px;
-    line-height: 1.2em;
-    font-size: 18px;
+    margin: 1em 0;
   }
 
   .product-description::-webkit-scrollbar {

@@ -24,8 +24,10 @@ class CurrencySelector extends Component {
   }
 
   handleClickOutside = (event) => {
-    if (this.currencyRef && !this.currencyRef.current.contains(event.target)) {
-      this.toggle();
+    if (this.currencyRef.current) {
+      if (!this.currencyRef.current.contains(event.target)) {
+        this.toggle();
+      }
     }
   };
 
